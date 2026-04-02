@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PT Academy — Developer Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1>PT Academy — Developer Dashboard</h1>
+                <span class="last-updated" id="lastUpdated"></span>
+            </div>
+            <button class="refresh-btn" id="refreshBtn">&#8635; Refresh</button>
+        </header>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar" id="statsBar">
+            <div class="stat">
+                <span class="stat-value" id="statOpen">—</span>
+                <span class="stat-label">Open</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value" id="statInProgress">—</span>
+                <span class="stat-label">In Progress</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value" id="statResolved">—</span>
+                <span class="stat-label">Resolved</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value" id="statCritical">—</span>
+                <span class="stat-label">Critical</span>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters">
+            <input type="text" id="searchInput" placeholder="Search tickets..." class="search-input">
+            <select id="filterStatus" class="filter-select">
+                <option value="">All Statuses</option>
+                <option value="Open">Open</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolved">Resolved</option>
+            </select>
+            <select id="filterSeverity" class="filter-select">
+                <option value="">All Severities</option>
+                <option value="Critical">Critical</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+            </select>
+            <select id="filterCategory" class="filter-select">
+                <option value="">All Categories</option>
+                <option value="Bug">Bug</option>
+                <option value="Data Issue">Data Issue</option>
+                <option value="Access Problem">Access Problem</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+
+        <!-- Loading / Error States -->
+        <div id="loadingState" class="state-message">Loading tickets...</div>
+        <div id="errorState" class="state-message error" style="display:none;"></div>
+        <div id="emptyState" class="state-message" style="display:none;">No tickets match your filters.</div>
+
+        <!-- Ticket Table -->
+        <div class="table-wrap" id="tableWrap" style="display:none;">
+            <table class="ticket-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Date</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Severity</th>
+                        <th>Status</th>
+                        <th>CRM URL</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="ticketTableBody"></tbody>
+            </table>
+        </div>
+
+        <!-- Ticket Detail Panel -->
+        <div class="detail-panel" id="detailPanel" style="display:none;">
+            <div class="detail-header">
+                <h2 id="detailTitle">Ticket #</h2>
+                <button class="close-btn" id="closeDetail">&times;</button>
+            </div>
+            <div class="detail-body">
+                <div class="detail-meta" id="detailMeta"></div>
+
+                <div class="detail-section">
+                    <h3>Issue Description</h3>
+                    <p id="detailDescription"></p>
+                </div>
+
+                <div class="detail-section" id="detailScreenshotWrap" style="display:none;">
+                    <h3>Screenshot</h3>
+                    <a id="detailScreenshot" href="#" target="_blank" class="screenshot-link">View screenshot in Google Drive</a>
+                </div>
+
+                <div class="detail-section">
+                    <h3>Update Ticket</h3>
+                    <div class="update-form">
+                        <label for="updateStatus">Status</label>
+                        <select id="updateStatus" class="filter-select">
+                            <option value="Open">Open</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Resolved">Resolved</option>
+                        </select>
+
+                        <label for="updateNotes">Developer Notes</label>
+                        <textarea id="updateNotes" rows="4" placeholder="Add your notes here..."></textarea>
+
+                        <button class="save-btn" id="saveBtn">Save Changes</button>
+                        <span class="save-feedback" id="saveFeedback"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>
