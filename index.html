@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PT Academy — CRM Issue Log</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form-card">
+            <h1>PT Academy — CRM Issue Log</h1>
+            <p class="subtitle">Report an issue with the CRM system</p>
+
+            <form id="issueForm">
+                <!-- Name Field -->
+                <div class="form-group">
+                    <label for="name">Your Name <span class="required">*</span></label>
+                    <select id="name" name="name" required>
+                        <option value="" disabled selected>Select your name...</option>
+                        <option value="Alice Smith">Alice Smith</option>
+                        <option value="Bob Johnson">Bob Johnson</option>
+                        <option value="Carol Williams">Carol Williams</option>
+                        <option value="David Brown">David Brown</option>
+                        <!-- Add more team members as needed -->
+                    </select>
+                    <span class="error-message" id="nameError"></span>
+                </div>
+
+                <!-- CRM URL Field -->
+                <div class="form-group">
+                    <label for="crmUrl">CRM URL <span class="required">*</span></label>
+                    <input type="text" id="crmUrl" name="crmUrl" placeholder="https://crm.example.com/..." required>
+                    <span class="error-message" id="crmUrlError"></span>
+                </div>
+
+                <!-- Date/Time Field -->
+                <div class="form-group">
+                    <label for="datetime">Date & Time <span class="required">*</span></label>
+                    <input type="datetime-local" id="datetime" name="datetime" readonly required>
+                    <span class="help-text">Auto-filled with current date and time</span>
+                </div>
+
+                <!-- Category Field -->
+                <div class="form-group">
+                    <label for="category">Category <span class="required">*</span></label>
+                    <select id="category" name="category" required>
+                        <option value="" disabled selected>Select a category...</option>
+                        <option value="Bug">Bug</option>
+                        <option value="Data Issue">Data Issue</option>
+                        <option value="Access Problem">Access Problem</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <span class="error-message" id="categoryError"></span>
+                </div>
+
+                <!-- Severity Field -->
+                <div class="form-group">
+                    <label for="severity">Severity <span class="required">*</span></label>
+                    <select id="severity" name="severity" required>
+                        <option value="" disabled selected>Select severity...</option>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                        <option value="Critical">Critical</option>
+                    </select>
+                    <span class="error-message" id="severityError"></span>
+                </div>
+
+                <!-- Description Field -->
+                <div class="form-group">
+                    <label for="description">Issue Description <span class="required">*</span></label>
+                    <textarea id="description" name="description" rows="5" placeholder="Describe the issue you're experiencing..." required></textarea>
+                    <span class="error-message" id="descriptionError"></span>
+                    <span class="help-text">Minimum 20 characters required</span>
+                </div>
+
+                <!-- Screenshot Field -->
+                <div class="form-group">
+                    <label for="screenshot">Screenshot (Optional)</label>
+                    <input type="file" id="screenshot" name="screenshot" accept="image/*,.pdf">
+                    <span class="error-message" id="screenshotError"></span>
+                    <span class="help-text">Max 5MB. Formats: JPG, PNG, GIF, PDF</span>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="submitBtn" class="submit-btn">Submit Issue</button>
+            </form>
+
+            <!-- Success Message -->
+            <div id="successMessage" class="success-message" style="display: none;">
+                <div class="success-content">
+                    <h2>✓ Issue Submitted Successfully</h2>
+                    <p>Your issue has been logged with ticket number: <strong id="ticketNumber"></strong></p>
+                    <p>The development team will investigate and follow up with you soon.</p>
+                    <button type="button" id="resetBtn" class="reset-btn">Submit Another Issue</button>
+                </div>
+            </div>
+
+            <!-- Error Message -->
+            <div id="errorMessage" class="error-message-box" style="display: none;">
+                <h3>⚠ Submission Failed</h3>
+                <p id="errorText"></p>
+                <button type="button" id="retryBtn" class="retry-btn">Try Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
