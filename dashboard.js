@@ -1,5 +1,5 @@
 // Same URL as in script.js — paste your Apps Script deployment URL here
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw1zWa5391iGJQVeqAn1huM8K9PWcs94YbDKbOte3z372N9k4h7Li4mJzTexVlZyi1f/exec';
 
 let allTickets = [];
 let activeTicketNumber = null;
