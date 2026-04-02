@@ -54,7 +54,7 @@ This guide walks you through deploying the CRM Issue Form so the PT Academy team
    - Change sharing to **"Anyone with the link"** → **Viewer** access
    - This allows the developer to click screenshot links without needing a Google login
 
----
+---https://drive.google.com/drive/folders/1tPTyX3DSPx6wY-NtZKdbzkx0VUcDsMZf?usp=drive_link
 
 ### Step 1.3 — Create the Apps Script
 
