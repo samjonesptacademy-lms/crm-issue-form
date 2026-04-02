@@ -1,5 +1,5 @@
-// Replace this with your deployed Apps Script URL
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw1zWa5391iGJQVeqAn1huM8K9PWcs94YbDKbOte3z372N9k4h7Li4mJzTexVlZyi1f/exec';
+// API endpoint — calls Cloudflare Pages Function which proxies to Apps Script
+const APPS_SCRIPT_URL = '/api/tickets';
 
 // Initialize form on page load
 document.addEventListener('DOMContentLoaded', () => {
