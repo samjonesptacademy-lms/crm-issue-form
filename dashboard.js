@@ -58,6 +58,8 @@ function renderTable(tickets) {
         const tr = document.createElement('tr');
         if (ticket.ticket === activeTicketNumber) tr.classList.add('active');
 
+        const msgBadge = ticket.messageCount > 0 ? `<span class="message-count-badge" title="${ticket.messageCount} message(s)">${ticket.messageCount}</span>` : '';
+
         tr.innerHTML = `
             <td class="ticket-num">#${ticket.ticket}</td>
             <td class="ticket-date">${formatDate(ticket.dateSubmitted)}</td>
@@ -66,7 +68,7 @@ function renderTable(tickets) {
             <td><span class="badge ${severityClass(ticket.severity)}">${escapeHtml(ticket.severity)}</span></td>
             <td><span class="badge ${statusClass(ticket.status)}">${escapeHtml(ticket.status)}</span></td>
             <td class="crm-url" title="${escapeHtml(ticket.crmUrl)}">${escapeHtml(ticket.crmUrl)}</td>
-            <td><button class="view-btn" data-ticket="${ticket.ticket}">View</button></td>
+            <td><button class="view-btn" data-ticket="${ticket.ticket}">View ${msgBadge}</button></td>
         `;
 
         tr.querySelector('.view-btn').addEventListener('click', (e) => {
