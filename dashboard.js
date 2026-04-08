@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('refreshBtn').addEventListener('click', loadTickets);
     document.getElementById('closeDetail').addEventListener('click', closeDetailPanel);
     document.getElementById('saveBtn').addEventListener('click', saveTicketUpdate);
+    document.getElementById('replyBtn').addEventListener('click', sendReply);
 });
 
 // ── Data Loading ────────────────────────────────────────────────────
@@ -141,7 +142,13 @@ function openDetailPanel(ticketNumber) {
     document.getElementById('saveFeedback').textContent = '';
     document.getElementById('saveFeedback').className  = 'save-feedback';
 
+    document.getElementById('replyText').value = '';
+    document.getElementById('replyFeedback').textContent = '';
+    document.getElementById('replyFeedback').className = 'save-feedback';
+
     document.getElementById('detailPanel').style.display = 'flex';
+
+    loadMessages(ticketNumber);
 }
 
 function closeDetailPanel() {
@@ -198,6 +205,82 @@ async function saveTicketUpdate() {
     } finally {
         saveBtn.disabled = false;
         saveBtn.textContent = 'Save Changes';
+    }
+}
+
+// ── Message Thread ───────────────────────────────────────────────────
+
+async function loadMessages(ticketNumber) {
+    const container = document.getElementById('threadMessages');
+    container.innerHTML = '<p class="thread-loading">Loading messages...</p>';
+
+    try {
+        const response = await fetch(`${APPS_SCRIPT_URL}?action=getMessages&ticketNumber=${ticketNumber}`);
+        const result = await response.json();
+
+        if (!result.success) throw new Error(result.error || 'Failed to load messages');
+
+        if (result.messages.length === 0) {
+            container.innerHTML = '<p class="thread-empty">No messages yet. Start the conversation below.</p>';
+            return;
+        }
+
+        container.innerHTML = result.messages.map(msg => `
+            <div class="message-bubble bubble-${escapeHtml(msg.senderType)}">
+                <div class="bubble-header">
+                    <strong>${escapeHtml(msg.senderName)}</strong>
+                    <span class="bubble-time">${formatDate(msg.timestamp)}</span>
+                </div>
+                <div class="bubble-body">${escapeHtml(msg.messageContent)}</div>
+            </div>
+        `).join('');
+
+        container.scrollTop = container.scrollHeight;
+
+    } catch (err) {
+        container.innerHTML = `<p class="thread-error">Failed to load messages: ${escapeHtml(err.message)}</p>`;
+    }
+}
+
+async function sendReply() {
+    const replyBtn      = document.getElementById('replyBtn');
+    const replyFeedback = document.getElementById('replyFeedback');
+    const replyText     = document.getElementById('replyText');
+    const message       = replyText.value.trim();
+
+    if (!message) return;
+
+    replyBtn.disabled = true;
+    replyBtn.textContent = 'Sending...';
+    replyFeedback.textContent = '';
+    replyFeedback.className = 'save-feedback';
+
+    try {
+        const response = await fetch(APPS_SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify({
+                action: 'postMessage',
+                ticketNumber: activeTicketNumber,
+                senderName: 'Developer',
+                senderType: 'developer',
+                messageContent: message
+            })
+        });
+
+        const result = await response.json();
+        if (!result.success) throw new Error(result.error || 'Send failed');
+
+        replyText.value = '';
+        replyFeedback.textContent = '✓ Sent';
+        replyFeedback.className = 'save-feedback success';
+        loadMessages(activeTicketNumber);
+
+    } catch (err) {
+        replyFeedback.textContent = '✗ Failed: ' + err.message;
+        replyFeedback.className = 'save-feedback error';
+    } finally {
+        replyBtn.disabled = false;
+        replyBtn.textContent = 'Send Reply';
     }
 }
 
