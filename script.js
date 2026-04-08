@@ -153,8 +153,7 @@ async function handleFormSubmit(e) {
             description,
             screenshotBase64,
             screenshotFileName,
-            screenshotMimeType,
-            email: document.getElementById('email').value.trim()
+            screenshotMimeType
         };
 
         // Send to Apps Script
