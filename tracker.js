@@ -80,6 +80,10 @@ function renderTickets(tickets) {
             </div>
             <div class="card-meta">
                 <div class="meta-line">
+                    <span class="meta-label">Title:</span>
+                    <span>${escapeHtml(ticket.title || '')}</span>
+                </div>
+                <div class="meta-line">
                     <span class="meta-label">Date:</span>
                     <span>${formatDate(ticket.dateSubmitted)}</span>
                 </div>
@@ -114,6 +118,7 @@ function openDetailModal(ticketNumber) {
     document.getElementById('modalTitle').textContent = `Ticket #${ticket.ticket}`;
 
     document.getElementById('ticketMeta').innerHTML = `
+        <div class="meta-item"><strong>Title:</strong> ${escapeHtml(ticket.title || '—')}</div>
         <div class="meta-item"><strong>Category:</strong> ${escapeHtml(ticket.category)}</div>
         <div class="meta-item"><strong>Severity:</strong> <span class="badge ${severityClass(ticket.severity)}">${escapeHtml(ticket.severity)}</span></div>
         <div class="meta-item"><strong>Status:</strong> <span class="badge ${statusClass(ticket.status)}">${escapeHtml(ticket.status)}</span></div>

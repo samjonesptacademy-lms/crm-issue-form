@@ -33,6 +33,7 @@ function setupFormHandlers() {
 function validateForm() {
     const errors = {};
     const name = document.getElementById('name').value.trim();
+    const title = document.getElementById('title').value.trim();
     const crmUrl = document.getElementById('crmUrl').value.trim();
     const description = document.getElementById('description').value.trim();
     const category = document.getElementById('category').value.trim();
@@ -46,6 +47,13 @@ function validateForm() {
     // Validate name
     if (!name) {
         errors.name = 'Please select your name';
+    }
+
+    // Validate title
+    if (!title) {
+        errors.title = 'Please enter a ticket title';
+    } else if (title.length > 100) {
+        errors.title = 'Title must be 100 characters or fewer';
     }
 
     // Validate CRM URL
@@ -127,6 +135,7 @@ async function handleFormSubmit(e) {
     try {
         // Get form data
         const name = document.getElementById('name').value;
+        const title = document.getElementById('title').value;
         const crmUrl = document.getElementById('crmUrl').value;
         const category = document.getElementById('category').value;
         const severity = document.getElementById('severity').value;
@@ -147,6 +156,7 @@ async function handleFormSubmit(e) {
         // Build payload
         const payload = {
             name,
+            title,
             crmUrl,
             category,
             severity,

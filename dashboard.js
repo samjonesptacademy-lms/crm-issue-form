@@ -64,6 +64,7 @@ function renderTable(tickets) {
             <td class="ticket-num">#${ticket.ticket}</td>
             <td class="ticket-date">${formatDate(ticket.dateSubmitted)}</td>
             <td>${escapeHtml(ticket.name)}</td>
+            <td>${escapeHtml(ticket.title || '')}</td>
             <td>${escapeHtml(ticket.category)}</td>
             <td><span class="badge ${severityClass(ticket.severity)}">${escapeHtml(ticket.severity)}</span></td>
             <td><span class="badge ${statusClass(ticket.status)}">${escapeHtml(ticket.status)}</span></td>
@@ -118,6 +119,7 @@ function openDetailPanel(ticketNumber) {
     document.getElementById('detailMeta').innerHTML = `
         <div class="meta-item"><strong>Submitted by:</strong> ${escapeHtml(ticket.name)}</div>
         <div class="meta-item"><strong>Date:</strong> ${formatDate(ticket.dateSubmitted)}</div>
+        <div class="meta-item"><strong>Title:</strong> ${escapeHtml(ticket.title || '—')}</div>
         <div class="meta-item"><strong>Category:</strong> ${escapeHtml(ticket.category)}</div>
         <div class="meta-item"><strong>Severity:</strong>
             <span class="badge ${severityClass(ticket.severity)}">${escapeHtml(ticket.severity)}</span>
@@ -336,7 +338,7 @@ function getFilteredTickets() {
         if (severity && t.severity !== severity) return false;
         if (category && t.category !== category) return false;
         if (search) {
-            const haystack = [t.name, t.description, t.crmUrl, t.category, String(t.ticket)]
+            const haystack = [t.name, t.title, t.description, t.crmUrl, t.category, String(t.ticket)]
                 .join(' ').toLowerCase();
             if (!haystack.includes(search)) return false;
         }
