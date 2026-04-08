@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PT Academy — My Tickets</title>
+    <link rel="stylesheet" href="tracker.css">
+</head>
+<body>
+    <div class="tracker-app">
+        <!-- Header -->
+        <header class="tracker-header">
+            <h1>PT Academy — My Tickets</h1>
+            <p class="tracker-subtitle">Check the status of your CRM issues and message the development team</p>
+        </header>
+
+        <!-- Lookup Section -->
+        <div class="lookup-section">
+            <div class="lookup-form">
+                <label for="nameSelect">Your Name</label>
+                <select id="nameSelect" class="name-select">
+                    <option value="" selected disabled>Select your name...</option>
+                    <option value="Atiya">Atiya</option>
+                    <option value="Tommy">Tommy</option>
+                    <option value="Tee">Tee</option>
+                    <option value="Mariah">Mariah</option>
+                    <option value="Ruksana">Ruksana</option>
+                    <option value="Jas">Jas</option>
+                    <option value="Ellie">Ellie</option>
+                </select>
+                <button id="findBtn" class="find-btn">Find My Tickets</button>
+            </div>
+        </div>
+
+        <!-- Loading / Error / Empty States -->
+        <div id="loadingState" class="state-message" style="display:none;">Loading your tickets...</div>
+        <div id="errorState" class="state-message error" style="display:none;"></div>
+        <div id="emptyState" class="state-message" style="display:none;">You don't have any tickets yet.</div>
+
+        <!-- Ticket Cards -->
+        <div class="tickets-container" id="ticketsContainer" style="display:none;">
+            <div id="ticketsList" class="tickets-list"></div>
+        </div>
+
+        <!-- Ticket Detail Modal -->
+        <div class="detail-modal" id="detailModal" style="display:none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modalTitle">Ticket #</h2>
+                    <button class="modal-close" id="closeModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="ticket-meta" id="ticketMeta"></div>
+                    <div class="ticket-section">
+                        <h3>Issue Description</h3>
+                        <p id="ticketDescription"></p>
+                    </div>
+                    <div class="ticket-section" id="devNotesWrap" style="display:none;">
+                        <h3>Developer Notes</h3>
+                        <p id="ticketDevNotes"></p>
+                    </div>
+                    <div class="ticket-section" id="screenshotWrap" style="display:none;">
+                        <h3>Screenshot</h3>
+                        <a id="screenshotLink" href="#" target="_blank" class="screenshot-link">View in Google Drive</a>
+                    </div>
+                    <div class="ticket-section">
+                        <h3>Message Thread</h3>
+                        <div id="modalThreadMessages" class="thread-messages"></div>
+                        <div class="thread-reply">
+                            <textarea id="modalReplyText" rows="3" placeholder="Send a message to the development team..."></textarea>
+                            <button class="send-btn" id="modalReplyBtn">Send Message</button>
+                            <span class="feedback" id="modalReplyFeedback"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="tracker.js"></script>
+</body>
+</html>
