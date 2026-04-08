@@ -24,9 +24,16 @@ export async function onRequest(context) {
     // Forward GET or POST to Apps Script
     const body = request.method === 'POST' ? await request.text() : undefined;
 
-    const upstream = await fetch(APPS_SCRIPT_URL, {
+    // Forward query parameters (e.g. ?action=getMessages&ticketNumber=5) to Apps Script
+    let targetUrl = APPS_SCRIPT_URL;
+    if (request.method === 'GET') {
+      const incoming = new URL(request.url);
+      if (incoming.search) targetUrl = APPS_SCRIPT_URL + incoming.search;
+    }
+
+    const upstream = await fetch(targetUrl, {
       method: request.method,
-      body,
+      body: body,
       redirect: 'follow',
     });
 
