@@ -6,26 +6,25 @@ let activeTicketNumber = null;
 let selectedName = '';
 
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('findBtn').addEventListener('click', findTickets);
-    document.getElementById('nameSelect').addEventListener('change', e => {
-        selectedName = e.target.value;
-    });
+    document.getElementById('filterName').addEventListener('change', filterTickets);
     document.getElementById('closeModal').addEventListener('click', closeDetailModal);
     document.getElementById('modalReplyBtn').addEventListener('click', sendMessage);
+
+    // Load all tickets on page load
+    loadAllTickets();
 });
+
+// Get selected name from URL parameter for direct links
+const urlParams = new URLSearchParams(window.location.search);
+const directTicketNumber = urlParams.get('ticket');
 
 // ── Data Loading ────────────────────────────────────────────────────
 
-async function findTickets() {
-    if (!selectedName) {
-        showState('empty', 'Please select your name first');
-        return;
-    }
-
+async function loadAllTickets() {
     showState('loading');
 
     try {
-        const response = await fetch(`${API_URL}?action=getTicketsByName&name=${encodeURIComponent(selectedName)}`);
+        const response = await fetch(`${API_URL}`);
         const result = await response.json();
 
         if (!result.success) throw new Error(result.error || 'Failed to load tickets');
@@ -34,13 +33,34 @@ async function findTickets() {
         renderTickets(userTickets);
 
         if (userTickets.length === 0) {
-            showState('empty', `No tickets found for ${selectedName}`);
+            showState('empty', 'No tickets found');
         } else {
             showState('tickets');
+            // If opened via direct link, open that ticket
+            if (directTicketNumber) {
+                openDetailModal(parseInt(directTicketNumber));
+            }
         }
 
     } catch (err) {
         showState('error', 'Failed to load tickets: ' + err.message);
+    }
+}
+
+function filterTickets() {
+    const selectedName = document.getElementById('filterName').value;
+    let filtered = userTickets;
+
+    if (selectedName) {
+        filtered = userTickets.filter(t => t.name === selectedName);
+    }
+
+    renderTickets(filtered);
+
+    if (filtered.length === 0) {
+        showState('empty', selectedName ? `No tickets found for ${selectedName}` : 'No tickets found');
+    } else {
+        showState('tickets');
     }
 }
 
@@ -123,6 +143,22 @@ function openDetailModal(ticketNumber) {
     document.getElementById('detailModal').style.display = 'flex';
 
     loadThreadMessages(ticketNumber);
+    markDeveloperMessagesAsRead(ticketNumber);
+}
+
+async function markDeveloperMessagesAsRead(ticketNumber) {
+  try {
+    await fetch(API_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: 'markRead',
+        ticketNumber: ticketNumber,
+        senderType: 'developer'
+      })
+    });
+  } catch (err) {
+    // Silent fail - marking as read is non-critical
+  }
 }
 
 function closeDetailModal() {

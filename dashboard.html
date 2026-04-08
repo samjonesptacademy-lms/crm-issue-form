@@ -125,8 +125,9 @@
                             <option value="Resolved">Resolved</option>
                         </select>
 
-                        <label for="updateNotes">Developer Notes</label>
-                        <textarea id="updateNotes" rows="4" placeholder="Add your notes here..."></textarea>
+                        <label for="updateNotes">Resolution Notes</label>
+                        <textarea id="updateNotes" rows="4" placeholder="Add resolution notes here..." disabled></textarea>
+                        <span class="help-text" id="notesHelpText">Notes are only editable when status is set to Resolved</span>
 
                         <button class="save-btn" id="saveBtn">Save Changes</button>
                         <span class="save-feedback" id="saveFeedback"></span>

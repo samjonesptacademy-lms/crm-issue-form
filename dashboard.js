@@ -144,6 +144,13 @@ function openDetailPanel(ticketNumber) {
     document.getElementById('saveFeedback').textContent = '';
     document.getElementById('saveFeedback').className  = 'save-feedback';
 
+    // Enable/disable Resolution Notes based on status
+    updateNotesField();
+
+    // Wire status change to enable/disable notes field
+    document.getElementById('updateStatus').removeEventListener('change', updateNotesField);
+    document.getElementById('updateStatus').addEventListener('change', updateNotesField);
+
     document.getElementById('replyText').value = '';
     document.getElementById('replyFeedback').textContent = '';
     document.getElementById('replyFeedback').className = 'save-feedback';
@@ -151,6 +158,13 @@ function openDetailPanel(ticketNumber) {
     document.getElementById('detailPanel').style.display = 'flex';
 
     loadMessages(ticketNumber);
+    markTeamMessagesAsRead(ticketNumber);
+}
+
+function updateNotesField() {
+  const status = document.getElementById('updateStatus').value;
+  const notesField = document.getElementById('updateNotes');
+  notesField.disabled = status !== 'Resolved';
 }
 
 function closeDetailPanel() {
@@ -284,6 +298,21 @@ async function sendReply() {
         replyBtn.disabled = false;
         replyBtn.textContent = 'Send Reply';
     }
+}
+
+async function markTeamMessagesAsRead(ticketNumber) {
+  try {
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: 'markRead',
+        ticketNumber: ticketNumber,
+        senderType: 'team'
+      })
+    });
+  } catch (err) {
+    // Silent fail - marking as read is non-critical
+  }
 }
 
 // ── Filters ─────────────────────────────────────────────────────────
