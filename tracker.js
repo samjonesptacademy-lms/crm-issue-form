@@ -30,7 +30,7 @@ async function loadAllTickets() {
 
         if (!result.success) throw new Error(result.error || 'Failed to load tickets');
 
-        userTickets = result.tickets || [];
+        userTickets = (result.tickets || []).reverse(); // newest first
         renderTickets(getFilteredTickets());
 
         if (userTickets.length === 0) {
