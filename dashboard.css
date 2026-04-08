@@ -238,6 +238,7 @@ body {
 .badge-open        { background: #e3f2fd; color: #1565c0; }
 .badge-in-progress { background: #fff8e1; color: #f57f17; }
 .badge-resolved    { background: #e8f5e9; color: #2e7d32; }
+.badge-closed      { background: #d0d0d0; color: #424242; }
 
 .view-btn {
     padding: 0.35rem 0.75rem;

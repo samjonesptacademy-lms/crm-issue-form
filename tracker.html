@@ -39,6 +39,7 @@
                 <option value="Open">Open</option>
                 <option value="In Progress">In Progress</option>
                 <option value="Resolved">Resolved</option>
+                <option value="Closed">Closed</option>
             </select>
         </div>
 
@@ -87,6 +88,13 @@
                         <h3>Screenshot</h3>
                         <a id="screenshotLink" href="#" target="_blank" class="screenshot-link">View in Google Drive</a>
                     </div>
+                    <div class="ticket-section" id="closeSection" style="display:none;">
+                        <h3>Confirm Resolution</h3>
+                        <p class="confirmation-text">Once you've tested and confirmed the resolution works, you can mark this ticket as closed.</p>
+                        <button class="close-ticket-btn" id="closeTicketBtn">Mark as Closed</button>
+                        <span class="feedback" id="closeFeedback"></span>
+                    </div>
+
                     <div class="ticket-section">
                         <h3>Message Thread</h3>
                         <div id="modalThreadMessages" class="thread-messages"></div>

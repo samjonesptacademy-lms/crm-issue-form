@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('searchInput').addEventListener('input', () => renderTickets(getFilteredTickets()));
     document.getElementById('closeModal').addEventListener('click', closeDetailModal);
     document.getElementById('modalReplyBtn').addEventListener('click', sendMessage);
+    document.getElementById('closeTicketBtn').addEventListener('click', closeTicket);
 
     // Load all tickets on page load
     loadAllTickets();
@@ -141,6 +142,19 @@ function openDetailModal(ticketNumber) {
     document.getElementById('modalReplyFeedback').textContent = '';
     document.getElementById('modalReplyFeedback').className = 'feedback';
 
+    // Show close section only if status is Resolved and not Closed
+    const closeSection = document.getElementById('closeSection');
+    const closeBtn = document.getElementById('closeTicketBtn');
+    if (ticket.status === 'Resolved') {
+        closeSection.style.display = 'block';
+        closeBtn.disabled = false;
+        closeBtn.textContent = 'Mark as Closed';
+    } else {
+        closeSection.style.display = 'none';
+    }
+    document.getElementById('closeFeedback').textContent = '';
+    document.getElementById('closeFeedback').className = 'feedback';
+
     document.getElementById('detailModal').style.display = 'flex';
 
     loadThreadMessages(ticketNumber);
@@ -249,6 +263,45 @@ async function sendMessage() {
     }
 }
 
+async function closeTicket() {
+    const closeBtn = document.getElementById('closeTicketBtn');
+    const closeFeedback = document.getElementById('closeFeedback');
+
+    closeBtn.disabled = true;
+    closeBtn.textContent = 'Marking as Closed...';
+    closeFeedback.textContent = '';
+    closeFeedback.className = 'feedback';
+
+    try {
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            body: JSON.stringify({
+                action: 'closedTicket',
+                ticketNumber: activeTicketNumber
+            })
+        });
+
+        const result = await response.json();
+        if (!result.success) throw new Error(result.error || 'Failed to close ticket');
+
+        closeFeedback.textContent = '✓ Ticket marked as closed';
+        closeFeedback.className = 'feedback success';
+        closeBtn.style.display = 'none';
+
+        // Reload tickets to reflect the change
+        setTimeout(() => {
+            loadAllTickets();
+            closeDetailModal();
+        }, 1000);
+
+    } catch (err) {
+        closeFeedback.textContent = '✗ Failed: ' + err.message;
+        closeFeedback.className = 'feedback error';
+        closeBtn.disabled = false;
+        closeBtn.textContent = 'Mark as Closed';
+    }
+}
+
 // ── State Management ────────────────────────────────────────────────
 
 function showState(state, message = '') {
@@ -276,7 +329,7 @@ function severityClass(severity) {
 }
 
 function statusClass(status) {
-    return { Open: 'badge-open', 'In Progress': 'badge-in-progress', Resolved: 'badge-resolved' }[status] || '';
+    return { Open: 'badge-open', 'In Progress': 'badge-in-progress', Resolved: 'badge-resolved', Closed: 'badge-closed' }[status] || '';
 }
 
 function escapeHtml(str) {

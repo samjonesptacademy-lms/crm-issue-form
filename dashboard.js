@@ -371,7 +371,7 @@ function severityClass(severity) {
 }
 
 function statusClass(status) {
-    return { Open: 'badge-open', 'In Progress': 'badge-in-progress', Resolved: 'badge-resolved' }[status] || '';
+    return { Open: 'badge-open', 'In Progress': 'badge-in-progress', Resolved: 'badge-resolved', Closed: 'badge-closed' }[status] || '';
 }
 
 function escapeHtml(str) {
