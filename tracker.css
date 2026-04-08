@@ -93,6 +93,131 @@ body {
     cursor: not-allowed;
 }
 
+/* Filters */
+.filters {
+    background: white;
+    padding: 1.5rem;
+    margin: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.search-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-family: inherit;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #0066cc;
+    box-shadow: 0 0 0 2px rgba(0,102,204,0.1);
+}
+
+.filter-select {
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    min-width: 150px;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #0066cc;
+    box-shadow: 0 0 0 2px rgba(0,102,204,0.1);
+}
+
+/* Table Wrap */
+.table-wrap {
+    background: white;
+    padding: 1.5rem;
+    margin: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    overflow-x: auto;
+}
+
+.ticket-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.ticket-table thead {
+    background: #f5f5f5;
+    border-bottom: 2px solid #ddd;
+}
+
+.ticket-table th {
+    padding: 0.75rem;
+    text-align: left;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.ticket-table tbody tr {
+    border-bottom: 1px solid #eee;
+    transition: background 0.2s;
+}
+
+.ticket-table tbody tr:hover {
+    background: #f9f9f9;
+}
+
+.ticket-table tbody tr.active {
+    background: #fffde7;
+}
+
+.ticket-table td {
+    padding: 0.75rem;
+    color: #1a1a1a;
+}
+
+.ticket-num {
+    font-weight: 600;
+    color: #0066cc;
+}
+
+.ticket-date {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.crm-url {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.view-btn {
+    padding: 0.4rem 1rem;
+    background: #0066cc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+
+.view-btn:hover {
+    background: #0052a3;
+}
+
 /* State Messages */
 .state-message {
     text-align: center;
@@ -394,6 +519,29 @@ body {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+}
+
+.thread-reply label {
+    display: block;
+    font-weight: 600;
+    color: #1a1a1a;
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+}
+
+.thread-reply select {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    margin-bottom: 0.5rem;
+}
+
+.thread-reply select:focus {
+    outline: none;
+    border-color: #0066cc;
+    box-shadow: 0 0 0 2px rgba(0,102,204,0.1);
 }
 
 .thread-reply textarea {

@@ -3,10 +3,10 @@ const API_URL = '/api/tickets';
 
 let userTickets = [];
 let activeTicketNumber = null;
-let selectedName = '';
 
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('filterName').addEventListener('change', filterTickets);
+    document.getElementById('filterName').addEventListener('change', () => renderTickets(getFilteredTickets()));
+    document.getElementById('searchInput').addEventListener('input', () => renderTickets(getFilteredTickets()));
     document.getElementById('closeModal').addEventListener('click', closeDetailModal);
     document.getElementById('modalReplyBtn').addEventListener('click', sendMessage);
 
@@ -30,12 +30,12 @@ async function loadAllTickets() {
         if (!result.success) throw new Error(result.error || 'Failed to load tickets');
 
         userTickets = result.tickets || [];
-        renderTickets(userTickets);
+        renderTickets(getFilteredTickets());
 
         if (userTickets.length === 0) {
-            showState('empty', 'No tickets found');
+            showState('empty');
         } else {
-            showState('tickets');
+            showState('table');
             // If opened via direct link, open that ticket
             if (directTicketNumber) {
                 openDetailModal(parseInt(directTicketNumber));
@@ -47,63 +47,56 @@ async function loadAllTickets() {
     }
 }
 
-function filterTickets() {
-    const selectedName = document.getElementById('filterName').value;
-    let filtered = userTickets;
+function getFilteredTickets() {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    const filterName = document.getElementById('filterName').value;
 
-    if (selectedName) {
-        filtered = userTickets.filter(t => t.name === selectedName);
-    }
-
-    renderTickets(filtered);
-
-    if (filtered.length === 0) {
-        showState('empty', selectedName ? `No tickets found for ${selectedName}` : 'No tickets found');
-    } else {
-        showState('tickets');
-    }
+    return userTickets.filter(t => {
+        if (filterName && t.name !== filterName) return false;
+        if (search) {
+            const haystack = [t.name, t.title, t.description, t.category, String(t.ticket)]
+                .join(' ').toLowerCase();
+            if (!haystack.includes(search)) return false;
+        }
+        return true;
+    });
 }
 
 // ── Rendering ────────────────────────────────────────────────────────
 
 function renderTickets(tickets) {
-    const list = document.getElementById('ticketsList');
-    list.innerHTML = '';
+    const tbody = document.getElementById('ticketTableBody');
+    tbody.innerHTML = '';
+
+    if (tickets.length === 0) {
+        showState('empty');
+        return;
+    }
+
+    showState('table');
 
     tickets.forEach(ticket => {
-        const card = document.createElement('div');
-        card.className = 'ticket-card';
-        card.innerHTML = `
-            <div class="card-header">
-                <h3>#${escapeHtml(String(ticket.ticket))}</h3>
-                <span class="badge ${statusClass(ticket.status)}">${escapeHtml(ticket.status)}</span>
-            </div>
-            <div class="card-meta">
-                <div class="meta-line">
-                    <span class="meta-label">Title:</span>
-                    <span>${escapeHtml(ticket.title || '')}</span>
-                </div>
-                <div class="meta-line">
-                    <span class="meta-label">Date:</span>
-                    <span>${formatDate(ticket.dateSubmitted)}</span>
-                </div>
-                <div class="meta-line">
-                    <span class="meta-label">Category:</span>
-                    <span>${escapeHtml(ticket.category)}</span>
-                </div>
-                <div class="meta-line">
-                    <span class="meta-label">Severity:</span>
-                    <span class="badge ${severityClass(ticket.severity)}">${escapeHtml(ticket.severity)}</span>
-                </div>
-            </div>
-            <button class="view-card-btn" data-ticket="${ticket.ticket}">View & Reply</button>
+        const tr = document.createElement('tr');
+        if (ticket.ticket === activeTicketNumber) tr.classList.add('active');
+
+        tr.innerHTML = `
+            <td class="ticket-num">#${ticket.ticket}</td>
+            <td class="ticket-date">${formatDate(ticket.dateSubmitted)}</td>
+            <td>${escapeHtml(ticket.name)}</td>
+            <td>${escapeHtml(ticket.title || '')}</td>
+            <td>${escapeHtml(ticket.category)}</td>
+            <td><span class="badge ${severityClass(ticket.severity)}">${escapeHtml(ticket.severity)}</span></td>
+            <td><span class="badge ${statusClass(ticket.status)}">${escapeHtml(ticket.status)}</span></td>
+            <td><button class="view-btn" data-ticket="${ticket.ticket}">View & Reply</button></td>
         `;
 
-        card.querySelector('.view-card-btn').addEventListener('click', () => {
+        tr.querySelector('.view-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
             openDetailModal(ticket.ticket);
         });
 
-        list.appendChild(card);
+        tr.addEventListener('click', () => openDetailModal(ticket.ticket));
+        tbody.appendChild(tr);
     });
 }
 
@@ -204,10 +197,17 @@ async function loadThreadMessages(ticketNumber) {
 }
 
 async function sendMessage() {
-    const replyBtn      = document.getElementById('modalReplyBtn');
-    const replyFeedback = document.getElementById('modalReplyFeedback');
-    const replyText     = document.getElementById('modalReplyText');
-    const message       = replyText.value.trim();
+    const replyBtn       = document.getElementById('modalReplyBtn');
+    const replyFeedback  = document.getElementById('modalReplyFeedback');
+    const replyText      = document.getElementById('modalReplyText');
+    const senderName     = document.getElementById('senderNameSelect').value.trim();
+    const message        = replyText.value.trim();
+
+    if (!senderName) {
+        replyFeedback.textContent = '✗ Please select your name';
+        replyFeedback.className = 'feedback error';
+        return;
+    }
 
     if (!message) return;
 
@@ -222,7 +222,7 @@ async function sendMessage() {
             body: JSON.stringify({
                 action: 'postMessage',
                 ticketNumber: activeTicketNumber,
-                senderName: selectedName,
+                senderName: senderName,
                 senderType: 'team',
                 messageContent: message
             })
@@ -232,6 +232,7 @@ async function sendMessage() {
         if (!result.success) throw new Error(result.error || 'Send failed');
 
         replyText.value = '';
+        document.getElementById('senderNameSelect').value = '';
         replyFeedback.textContent = '✓ Message sent to the development team';
         replyFeedback.className = 'feedback success';
         loadThreadMessages(activeTicketNumber);
@@ -251,11 +252,10 @@ function showState(state, message = '') {
     document.getElementById('loadingState').style.display = state === 'loading' ? 'block' : 'none';
     document.getElementById('errorState').style.display   = state === 'error'   ? 'block' : 'none';
     document.getElementById('emptyState').style.display   = state === 'empty'   ? 'block' : 'none';
-    document.getElementById('ticketsContainer').style.display = state === 'tickets' ? 'block' : 'none';
+    document.getElementById('tableWrap').style.display    = state === 'table'   ? 'block' : 'none';
 
-    if (state === 'error' || state === 'empty') {
-        const elem = state === 'error' ? document.getElementById('errorState') : document.getElementById('emptyState');
-        elem.textContent = message;
+    if (state === 'error') {
+        document.getElementById('errorState').textContent = message;
     }
 }
 

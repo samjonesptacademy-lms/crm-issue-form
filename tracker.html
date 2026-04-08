@@ -15,34 +15,46 @@
         </header>
 
         <!-- Filter Section -->
-        <div class="lookup-section">
-            <div class="lookup-form">
-                <label for="filterName">Filter by Name</label>
-                <select id="filterName" class="name-select">
-                    <option value="">All Tickets</option>
-                    <option value="Atiya">Atiya</option>
-                    <option value="Tommy">Tommy</option>
-                    <option value="Tee">Tee</option>
-                    <option value="Mariah">Mariah</option>
-                    <option value="Jordan">Jordan</option>
-                    <option value="Ruksana">Ruksana</option>
-                    <option value="Jas">Jas</option>
-                    <option value="Ellie">Ellie</option>
-                    <option value="Sam">Sam</option>
-                    <option value="Simi">Simi</option>
-                    <option value="Adam Kiani">Adam Kiani</option>
-                </select>
-            </div>
+        <div class="filters">
+            <input type="text" id="searchInput" placeholder="Search tickets..." class="search-input">
+            <select id="filterName" class="filter-select">
+                <option value="">All Names</option>
+                <option value="Atiya">Atiya</option>
+                <option value="Tommy">Tommy</option>
+                <option value="Tee">Tee</option>
+                <option value="Mariah">Mariah</option>
+                <option value="Jordan">Jordan</option>
+                <option value="Ruksana">Ruksana</option>
+                <option value="Jas">Jas</option>
+                <option value="Ellie">Ellie</option>
+                <option value="Sam">Sam</option>
+                <option value="Simi">Simi</option>
+                <option value="Adam Kiani">Adam Kiani</option>
+            </select>
         </div>
 
         <!-- Loading / Error / Empty States -->
         <div id="loadingState" class="state-message" style="display:none;">Loading your tickets...</div>
         <div id="errorState" class="state-message error" style="display:none;"></div>
-        <div id="emptyState" class="state-message" style="display:none;">You don't have any tickets yet.</div>
+        <div id="emptyState" class="state-message" style="display:none;">No tickets found.</div>
 
-        <!-- Ticket Cards -->
-        <div class="tickets-container" id="ticketsContainer" style="display:none;">
-            <div id="ticketsList" class="tickets-list"></div>
+        <!-- Ticket Table -->
+        <div class="table-wrap" id="tableWrap" style="display:none;">
+            <table class="ticket-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Date</th>
+                        <th>Name</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Severity</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="ticketTableBody"></tbody>
+            </table>
         </div>
 
         <!-- Ticket Detail Modal -->
@@ -70,6 +82,21 @@
                         <h3>Message Thread</h3>
                         <div id="modalThreadMessages" class="thread-messages"></div>
                         <div class="thread-reply">
+                            <label for="senderNameSelect">Your Name</label>
+                            <select id="senderNameSelect" class="name-select">
+                                <option value="" disabled selected>Select your name...</option>
+                                <option value="Atiya">Atiya</option>
+                                <option value="Tommy">Tommy</option>
+                                <option value="Tee">Tee</option>
+                                <option value="Mariah">Mariah</option>
+                                <option value="Jordan">Jordan</option>
+                                <option value="Ruksana">Ruksana</option>
+                                <option value="Jas">Jas</option>
+                                <option value="Ellie">Ellie</option>
+                                <option value="Sam">Sam</option>
+                                <option value="Simi">Simi</option>
+                                <option value="Adam Kiani">Adam Kiani</option>
+                            </select>
                             <textarea id="modalReplyText" rows="3" placeholder="Send a message to the development team..."></textarea>
                             <button class="send-btn" id="modalReplyBtn">Send Message</button>
                             <span class="feedback" id="modalReplyFeedback"></span>
