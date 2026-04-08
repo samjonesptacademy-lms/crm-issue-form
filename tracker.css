@@ -20,8 +20,16 @@ body {
 .tracker-header {
     background: #1a1a2e;
     color: white;
-    padding: 2rem 1.5rem;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.header-left {
     text-align: center;
+    flex: 1;
 }
 
 .tracker-header h1 {
@@ -32,6 +40,24 @@ body {
 .tracker-subtitle {
     font-size: 0.95rem;
     color: #bbb;
+}
+
+.new-ticket-btn {
+    padding: 0.65rem 1.5rem;
+    background: #0066cc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.new-ticket-btn:hover {
+    background: #0052a3;
 }
 
 /* Lookup Section */

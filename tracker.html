@@ -10,8 +10,11 @@
     <div class="tracker-app">
         <!-- Header -->
         <header class="tracker-header">
-            <h1>PT Academy — My Tickets</h1>
-            <p class="tracker-subtitle">Check the status of your CRM issues and message the development team</p>
+            <div class="header-left">
+                <h1>PT Academy — My Tickets</h1>
+                <p class="tracker-subtitle">Check the status of your CRM issues and message the development team</p>
+            </div>
+            <button class="new-ticket-btn" onclick="window.location.href='index.html'">+ New Ticket</button>
         </header>
 
         <!-- Filter Section -->
@@ -30,6 +33,12 @@
                 <option value="Sam">Sam</option>
                 <option value="Simi">Simi</option>
                 <option value="Adam Kiani">Adam Kiani</option>
+            </select>
+            <select id="filterStatus" class="filter-select">
+                <option value="">All Statuses</option>
+                <option value="Open">Open</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolved">Resolved</option>
             </select>
         </div>
 

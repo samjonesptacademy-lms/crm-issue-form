@@ -6,6 +6,7 @@ let activeTicketNumber = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('filterName').addEventListener('change', () => renderTickets(getFilteredTickets()));
+    document.getElementById('filterStatus').addEventListener('change', () => renderTickets(getFilteredTickets()));
     document.getElementById('searchInput').addEventListener('input', () => renderTickets(getFilteredTickets()));
     document.getElementById('closeModal').addEventListener('click', closeDetailModal);
     document.getElementById('modalReplyBtn').addEventListener('click', sendMessage);
@@ -50,9 +51,11 @@ async function loadAllTickets() {
 function getFilteredTickets() {
     const search = document.getElementById('searchInput').value.toLowerCase();
     const filterName = document.getElementById('filterName').value;
+    const filterStatus = document.getElementById('filterStatus').value;
 
     return userTickets.filter(t => {
         if (filterName && t.name !== filterName) return false;
+        if (filterStatus && t.status !== filterStatus) return false;
         if (search) {
             const haystack = [t.name, t.title, t.description, t.category, String(t.ticket)]
                 .join(' ').toLowerCase();
