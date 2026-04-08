@@ -1,7 +1,7 @@
 // Cloudflare Pages Function — proxy between browser and Google Apps Script
 // This eliminates CORS issues by making server-to-server calls
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw1zWa5391iGJQVeqAn1huM8K9PWcs94YbDKbOte3z372N9k4h7Li4mJzTexVlZyi1f/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzyL4DlzBqu5MBVRuGY3rVOCFLap6Xmpo7N4QpcgcLZImzGatADAdo-9uspVzHfZyF6Dg/exec';
 
 export async function onRequest(context) {
   const { request } = context;
