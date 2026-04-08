@@ -181,7 +181,14 @@ async function saveTicketUpdate() {
     const saveBtn      = document.getElementById('saveBtn');
     const saveFeedback = document.getElementById('saveFeedback');
     const status       = document.getElementById('updateStatus').value;
-    const notes        = document.getElementById('updateNotes').value;
+    const notes        = document.getElementById('updateNotes').value.trim();
+
+    // Validate: Resolution Notes are mandatory when status is Resolved
+    if (status === 'Resolved' && !notes) {
+        saveFeedback.textContent = '✗ Resolution Notes are required when marking as Resolved';
+        saveFeedback.className = 'save-feedback error';
+        return;
+    }
 
     saveBtn.disabled = true;
     saveBtn.textContent = 'Saving...';
