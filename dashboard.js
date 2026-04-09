@@ -58,7 +58,7 @@ function renderTable(tickets) {
         const tr = document.createElement('tr');
         if (ticket.ticket === activeTicketNumber) tr.classList.add('active');
 
-        const msgBadge = ticket.messageCount > 0 ? `<span class="message-count-badge" title="${ticket.messageCount} message(s)">${ticket.messageCount}</span>` : '';
+        const msgBadge = ticket.unreadTeamMessages > 0 ? `<span class="message-count-badge" title="${ticket.unreadTeamMessages} unread message(s)">${ticket.unreadTeamMessages}</span>` : '';
 
         tr.innerHTML = `
             <td class="ticket-num">#${ticket.ticket}</td>

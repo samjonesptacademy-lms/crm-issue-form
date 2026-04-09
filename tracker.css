@@ -314,6 +314,20 @@ body {
 .badge-resolved    { background: #e8f5e9; color: #2e7d32; }
 .badge-closed      { background: #d0d0d0; color: #424242; }
 
+.message-count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.2rem;
+    height: 1.2rem;
+    background: #ff6b6b;
+    color: white;
+    border-radius: 50%;
+    font-size: 0.65rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
 /* Card Meta */
 .card-meta {
     margin-bottom: 1rem;

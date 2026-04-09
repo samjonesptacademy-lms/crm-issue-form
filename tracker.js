@@ -83,6 +83,8 @@ function renderTickets(tickets) {
         const tr = document.createElement('tr');
         if (ticket.ticket === activeTicketNumber) tr.classList.add('active');
 
+        const msgBadge = ticket.unreadDeveloperMessages > 0 ? `<span class="message-count-badge" title="${ticket.unreadDeveloperMessages} unread message(s)">${ticket.unreadDeveloperMessages}</span>` : '';
+
         tr.innerHTML = `
             <td class="ticket-num">#${ticket.ticket}</td>
             <td class="ticket-date">${formatDate(ticket.dateSubmitted)}</td>
@@ -91,7 +93,7 @@ function renderTickets(tickets) {
             <td>${escapeHtml(ticket.category)}</td>
             <td><span class="badge ${severityClass(ticket.severity)}">${escapeHtml(ticket.severity)}</span></td>
             <td><span class="badge ${statusClass(ticket.status)}">${escapeHtml(ticket.status)}</span></td>
-            <td><button class="view-btn" data-ticket="${ticket.ticket}">View & Reply</button></td>
+            <td><button class="view-btn" data-ticket="${ticket.ticket}">View & Reply ${msgBadge}</button></td>
         `;
 
         tr.querySelector('.view-btn').addEventListener('click', (e) => {
