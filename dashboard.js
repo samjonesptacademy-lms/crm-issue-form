@@ -250,15 +250,22 @@ async function loadMessages(ticketNumber) {
             return;
         }
 
-        container.innerHTML = result.messages.map(msg => `
-            <div class="message-bubble bubble-${escapeHtml(msg.senderType)}">
-                <div class="bubble-header">
-                    <strong>${escapeHtml(msg.senderName)}</strong>
-                    <span class="bubble-time">${formatDate(msg.timestamp)}</span>
+        container.innerHTML = result.messages.map(msg => {
+            let screenshotHtml = '';
+            if (msg.screenshotLink) {
+                screenshotHtml = `<div class="message-screenshot"><a href="${escapeHtml(msg.screenshotLink)}" target="_blank" class="screenshot-link">View Screenshot</a></div>`;
+            }
+            return `
+                <div class="message-bubble bubble-${escapeHtml(msg.senderType)}">
+                    <div class="bubble-header">
+                        <strong>${escapeHtml(msg.senderName)}</strong>
+                        <span class="bubble-time">${formatDate(msg.timestamp)}</span>
+                    </div>
+                    <div class="bubble-body">${escapeHtml(msg.messageContent)}</div>
+                    ${screenshotHtml}
                 </div>
-                <div class="bubble-body">${escapeHtml(msg.messageContent)}</div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
 
         container.scrollTop = container.scrollHeight;
 
