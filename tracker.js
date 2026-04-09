@@ -196,15 +196,22 @@ async function loadThreadMessages(ticketNumber) {
             return;
         }
 
-        container.innerHTML = result.messages.map(msg => `
-            <div class="message-bubble bubble-${escapeHtml(msg.senderType)}">
-                <div class="bubble-header">
-                    <strong>${escapeHtml(msg.senderName)}</strong>
-                    <span class="bubble-time">${formatDate(msg.timestamp)}</span>
+        container.innerHTML = result.messages.map(msg => {
+            let screenshotHtml = '';
+            if (msg.screenshotLink) {
+                screenshotHtml = `<div class="message-screenshot"><a href="${escapeHtml(msg.screenshotLink)}" target="_blank" class="screenshot-link">View Screenshot</a></div>`;
+            }
+            return `
+                <div class="message-bubble bubble-${escapeHtml(msg.senderType)}">
+                    <div class="bubble-header">
+                        <strong>${escapeHtml(msg.senderName)}</strong>
+                        <span class="bubble-time">${formatDate(msg.timestamp)}</span>
+                    </div>
+                    <div class="bubble-body">${escapeHtml(msg.messageContent)}</div>
+                    ${screenshotHtml}
                 </div>
-                <div class="bubble-body">${escapeHtml(msg.messageContent)}</div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
 
         container.scrollTop = container.scrollHeight;
 
@@ -219,6 +226,7 @@ async function sendMessage() {
     const replyText      = document.getElementById('modalReplyText');
     const senderName     = document.getElementById('senderNameSelect').value.trim();
     const message        = replyText.value.trim();
+    const screenshotFile = document.getElementById('messageScreenshot').files[0];
 
     if (!senderName) {
         replyFeedback.textContent = '✗ Please select your name';
@@ -234,6 +242,16 @@ async function sendMessage() {
     replyFeedback.className = 'feedback';
 
     try {
+        let screenshotBase64 = '';
+        let screenshotFileName = '';
+        let screenshotMimeType = '';
+
+        if (screenshotFile) {
+            screenshotBase64 = await fileToBase64(screenshotFile);
+            screenshotFileName = screenshotFile.name;
+            screenshotMimeType = screenshotFile.type;
+        }
+
         const response = await fetch(API_URL, {
             method: 'POST',
             body: JSON.stringify({
@@ -241,7 +259,10 @@ async function sendMessage() {
                 ticketNumber: activeTicketNumber,
                 senderName: senderName,
                 senderType: 'team',
-                messageContent: message
+                messageContent: message,
+                screenshotBase64: screenshotBase64,
+                screenshotFileName: screenshotFileName,
+                screenshotMimeType: screenshotMimeType
             })
         });
 
@@ -250,6 +271,7 @@ async function sendMessage() {
 
         replyText.value = '';
         document.getElementById('senderNameSelect').value = '';
+        document.getElementById('messageScreenshot').value = '';
         replyFeedback.textContent = '✓ Message sent to the development team';
         replyFeedback.className = 'feedback success';
         loadThreadMessages(activeTicketNumber);
@@ -261,6 +283,15 @@ async function sendMessage() {
         replyBtn.disabled = false;
         replyBtn.textContent = 'Send Message';
     }
+}
+
+function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
 }
 
 async function closeTicket() {

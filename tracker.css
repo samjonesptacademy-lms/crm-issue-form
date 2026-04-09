@@ -541,6 +541,23 @@ body {
     word-break: break-word;
 }
 
+.message-screenshot {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.screenshot-link {
+    color: #0066cc;
+    font-size: 0.85rem;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.screenshot-link:hover {
+    text-decoration: underline;
+}
+
 /* Thread Reply */
 .thread-reply {
     display: flex;
@@ -563,12 +580,39 @@ body {
     font-size: 0.9rem;
     font-family: inherit;
     margin-bottom: 0.5rem;
+    width: 100%;
 }
 
 .thread-reply select:focus {
     outline: none;
     border-color: #0066cc;
     box-shadow: 0 0 0 2px rgba(0,102,204,0.1);
+}
+
+.file-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.file-input {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-family: inherit;
+}
+
+.file-input:focus {
+    outline: none;
+    border-color: #0066cc;
+    box-shadow: 0 0 0 2px rgba(0,102,204,0.1);
+}
+
+.file-help {
+    font-size: 0.75rem;
+    color: #999;
 }
 
 .thread-reply textarea {

@@ -115,6 +115,11 @@
                                 <option value="Adam Kiani">Adam Kiani</option>
                             </select>
                             <textarea id="modalReplyText" rows="3" placeholder="Send a message to the development team..."></textarea>
+                            <div class="file-input-wrapper">
+                                <label for="messageScreenshot">Attach Screenshot (Optional)</label>
+                                <input type="file" id="messageScreenshot" accept="image/*,.pdf" class="file-input">
+                                <span class="file-help">Max 5MB. Formats: JPG, PNG, GIF, PDF</span>
+                            </div>
                             <button class="send-btn" id="modalReplyBtn">Send Message</button>
                             <span class="feedback" id="modalReplyFeedback"></span>
                         </div>
