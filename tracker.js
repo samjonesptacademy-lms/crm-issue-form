@@ -149,6 +149,7 @@ function openDetailModal(ticketNumber) {
     const closeBtn = document.getElementById('closeTicketBtn');
     if (ticket.status === 'Resolved') {
         closeSection.style.display = 'block';
+        closeBtn.style.display = '';
         closeBtn.disabled = false;
         closeBtn.textContent = 'Mark as Closed';
     } else {
