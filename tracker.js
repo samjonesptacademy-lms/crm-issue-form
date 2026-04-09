@@ -322,11 +322,11 @@ async function closeTicket() {
         closeFeedback.className = 'feedback success';
         closeBtn.style.display = 'none';
 
-        // Reload tickets to reflect the change
-        setTimeout(() => {
-            loadAllTickets();
-            closeDetailModal();
-        }, 1000);
+        // Update local data and close modal without full reload
+        const ticket = userTickets.find(t => t.ticket === activeTicketNumber);
+        if (ticket) ticket.status = 'Closed';
+        renderTickets(getFilteredTickets());
+        closeDetailModal();
 
     } catch (err) {
         closeFeedback.textContent = '✗ Failed: ' + err.message;
